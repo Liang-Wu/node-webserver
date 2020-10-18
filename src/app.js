@@ -2,6 +2,10 @@ const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
 
+const gedCode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
+
+
 console.log(__dirname)
 console.log(__filename)
 console.log(path.join(__dirname,'../public'))
@@ -49,6 +53,30 @@ app.get('/help/*',(req,res)=>{
         createdBy:'Steven'
     })
 })
+app.get('/weather',(req,res)=>{
+   if(!req.query.address)
+       return  res.send({error:'address is required'})
+    gedCode(req.query.address,(error, {lat, lon, location}={})=>{
+        if(error)
+        {
+            return res.send({error})
+        }
+        else
+        {
+            forecast(lat,lon,(err, data)=>{
+                if (err) return  res.send({error:err})
+                else
+                    return  res.send({
+                        msg:data,
+                        location:location
+                    })
+            })
+        }
+    })
+})
+
+
+
 app.get('*',(req,res)=>{
     res.render('errors',{
         title:'404',
@@ -59,9 +87,6 @@ app.get('*',(req,res)=>{
 
 
 
-app.get('/weather',(req,res)=>{
-    res.send('weather')
-})
 
 
 app.listen(3000,()=>{

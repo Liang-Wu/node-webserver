@@ -5,13 +5,20 @@
     <link rel="icon" href="/img/weather.png">
     <title>Weather</title>
     <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/app.js" type="text/javascript"></script>
 </head>
-<body>
+
 <div class="main-contianer">
     {{>header}}
+    <p>Use this site to get the weather</p>
+    <form>
+        <input type="text" placeholder="Location">
+        <button>Search</button>
+    </form>
+    <P id="message-1"></P>
+    <P id="message-2"></P>
 </div>
 {{>footer}}
 
+<script src="/js/app.js" type="text/javascript"></script>
 </body>
 </html>
